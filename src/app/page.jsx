@@ -8,7 +8,7 @@ import Panel from "@/components/panel/Panel";
       </div>
       <div className="column is-10">
         <div className="box">
-
+            
         </div>
       </div>
     </div>
