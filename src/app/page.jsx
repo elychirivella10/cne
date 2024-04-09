@@ -1,4 +1,6 @@
 import Panel from "@/components/panel/Panel";
+import Steps from '@/components/steps/Steps'
+import Buscar from "@/components/buscar/Buscar";
 
  const Form =()=> {
   return (
@@ -8,8 +10,14 @@ import Panel from "@/components/panel/Panel";
       </div>
       <div className="column is-10">
         <div className="box">
-            
+          <Steps 
+            number={2}  
+            titles={{title1:'Información Funcionario',title2:'Encuesta'}}
+          />
         </div>
+      </div>
+      <div className="column is-10">
+        <Buscar/>
       </div>
     </div>
   );
