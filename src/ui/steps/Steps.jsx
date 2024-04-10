@@ -1,9 +1,10 @@
 'use client'
 import { useState } from "react";
-export const Step=({type, number, insertStep, title})=>{
+export const Step=({type, number, insertStep, title, stepNumero})=>{
     return(
         <li className={`step-item ${type}`} onClick={()=>{
             insertStep(number)
+            stepNumero(number)
         }}>
             <div className={`step-marker ${type}`}></div>
             <div className="step-details is-primary is-completed">
