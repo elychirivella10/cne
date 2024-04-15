@@ -26,7 +26,7 @@ import { filterComponents } from "@/lib/helpers/filterComponents";
   return (
     <div className="columns is-multiline is-centered">
       <div className="column is-10">
-        <Panel title='SAPI' subtitle={`Encuesta`}/>
+        <Panel title='Nombre de Ente' subtitle={`Encuesta`}/>
       </div>
       <div className="column is-10">
         <div className="box">

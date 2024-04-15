@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "CNE",
-  description: "Pagina para ingresar datos de votacion",
+  description: "Pagina para ingresar datos de votación",
 };
 
 export default function RootLayout({ children }) {
