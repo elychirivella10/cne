@@ -1,10 +1,9 @@
-'use client'
+
 import React, {useState} from "react"
 
-const Buscar =({state, setState})=>{
-    const [per, setPer] = useState({
+import { creates } from "@/lib/peticiones/funcionariosBusqueda"
 
-    })
+const Buscar =({set})=>{
 
     const [inde, setInde] = useState(0)
     return(
@@ -30,7 +29,9 @@ const Buscar =({state, setState})=>{
                                     )}/>
                                 </p> 
                                 <div className="control">
-                                    <button className="button is-info">
+                                    <button className="button is-info" onClick={(e)=>(
+                                        creates(inde, set)
+                                    )}>
                                         Buscar
                                     </button>
                                 </div>

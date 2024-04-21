@@ -1,8 +1,12 @@
+
 import React from 'react'
 
 import { Table } from 'antd'
 
-const TableComp = ({columns, data, pagination}) =>{
+import { creates } from "@/lib/peticiones/funcionariosList";
+
+const TableComp = async ({columns,pagination}) =>{
+    const data = await creates()
     return(
         <div className="box">
             <Table

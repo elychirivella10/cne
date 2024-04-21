@@ -9,12 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.0",
+    "@fortawesome/fontawesome-free": "^6.5.2",
     "antd": "^5.16.1",
+    "apexcharts": "^3.48.0",
+    "axios": "^1.6.8",
     "bulma-scss": "^0.9.4",
     "bulma-switch": "^2.0.4",
     "next": "14.1.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-apexcharts": "^1.4.1",
+    "react-dom": "^18",
+    "recharts": "^2.12.6"
   },
   "devDependencies": {
     "eslint": "^8",

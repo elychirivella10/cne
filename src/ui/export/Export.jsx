@@ -8,7 +8,7 @@ const Export=()=>{
     }
     return(
         <div className="box">
-            <p className=" has-text-weight-semibold">Filtros</p>
+            <p className=" has-text-weight-semibold">Buscar Cedula</p>
             <div className="field">
                 <input id="switchExample" type="text" name="switchExample" className="input" onChange={ChangeStatusExport}/>
             </div>

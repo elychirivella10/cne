@@ -2,10 +2,11 @@ import { Inter } from "next/font/google";
 
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 
-import '@fortawesome/fontawesome-free/css/all.css'
+import NavBar from "@/ui/navbar/Navbar";
 
-import '@/styles/style2.css'
-import '@/styles/index.css'
+import '@fortawesome/fontawesome-free/css/all.css'
+import { Fragment } from "react";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -15,10 +16,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-          <AntdRegistry>{children}</AntdRegistry>
-      </body>
-    </html>
+        <Fragment>
+          <NavBar/>
+          <div className="container">
+            {children}
+          </div>
+        </Fragment>
+
   );
 }
