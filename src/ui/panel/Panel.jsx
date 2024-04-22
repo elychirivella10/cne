@@ -13,7 +13,7 @@ const Panel = ({title, subtitle, options, ...rest}) =>{
                       
                     </div>
                     <figure className="image is-48x48 is-pulled-left mr-3">
-                        <Image className="" src={'/logo/logo.png'} priority alt="marca" width={500} height={500}/>
+                        <Image className="" src={'/logo/logo2.png'} priority alt="marca" width={500} height={500}/>
                     </figure>
                     <p className="title">
                         {title}

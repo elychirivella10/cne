@@ -1,6 +1,5 @@
 'use client'
-
-import React, { useRef, useState } from 'react';
+import { estados } from "@/lib/data/estados";
 
 export const Columns = [
     {
@@ -14,16 +13,14 @@ export const Columns = [
     {
       title:'Estado',
       dataIndex:'estado',
-      filters: [
-        {
-          text: 'Distrito Capital',
-          value: 'Distrito Capital',
-        },
-        {
-          text: 'New York',
-          value: 'New York',
-        },
-      ],
+      filters: 
+        estados.map(es=>(
+          {
+            text: es.estado,
+            value: es.estado,
+          }
+        )),
+
       onFilter: (value, record) => record.estado.indexOf(value) === 0,
     },
     {
@@ -36,21 +33,22 @@ export const Columns = [
     },
     {
       title:'Estatus',
-      dataIndex:'id_estatus',
+      dataIndex:'estatus',
       filters: [
         {
           text: 'Si',
-          value: 'Si',
+          value: 'SI',
         },
         {
           text: 'No',
-          value: 'No',
+          value: 'NO',
         },
         {
           text: 'Sin definir',
-          value: 'Sin definir',
+          value: 'SIN DEFINIR',
         },
       ],
-      onFilter: (value, record) => record.cedula.indexOf(value) === 0,
+      onFilter: (value, record) => record.estatus.indexOf(value) === 0,
     }
   ];
+

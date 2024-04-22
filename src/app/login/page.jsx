@@ -1,62 +1,97 @@
-import {Fragment} from 'react'
+'use client'
+import {Fragment, useState} from 'react'
 import Image from 'next/image'
+import { login } from '@/lib/peticiones/login'
+
+//Instancia de app de antd, para usar componentes si colocar manualmente la configuración
+import { App } from 'antd';
+import { useRouter } from 'next/navigation'
 
 const Login=()=>{
+    const router = useRouter()
 
+    //obtenemos la variable de mensaje que traemos de la instancia App
+    const {message} = App.useApp();
+    
+    const [credenciales, setCredenciales] = useState({
+        user:"",
+        pass:""
+    })
+
+    const handleSubmit = async (e) =>{
+        e.preventDefault()
+        const res = await login(credenciales, message)
+        console.log(res)
+        if (res===true) {
+            router.push('/funcionarios/dashboard')
+        }
+    }
     return (
-        <Fragment>
-                    <section className="hero is-fullheight">
-                        <div className="hero-head">
+    <Fragment>
+        <div className='has-background-login scrool'>
+            <div className="has-blur vh-min100">
+                <div className="columns mt-0 is-vcentered">
+                    <div className="column is-7 pt-0 pb-0 pr-0 is-hidden-touch">
+                        <div className="columns is-centered is-multiline">
+                            <div className="column is-12">
+                                <div className="author-quote-wrap">
+                                    <input className="toggle-quote" type="radio" id="AQ-1" name="quote" checked readOnly/>
+                                    <div className="author-quote">
+                                        <div className="is-pulled-left author-photo photo-a animated bounceInLeft">
 
-                        <nav className="navbar">
-                            <div className="container is-justify-content-center">
-                                <div className="navbar-brand is-justify-content-center">
-                                <p className="navbar-item">
-                                    <span className='is-pointer is-size-6 pr-2 border-logo' >CNE</span>
-                                        <Image className="pl-2 mr-1" src={'/logo/logo.png'} priority alt="marca" width={25} height={25}/>
-                                    <span className='has-text-weight-semibold is-pointer is-size-6' >EMPRESA</span>
-                                </p>
+                                        </div>
+                                        <div className="is-pulled-right quote-content">
+                                            <div className="clearfix animated zoomIn"><div className="quote-like pull-right"></div></div>
+                                            <div className="quote-text animated rotateInDownRight">Nuestra vida no es otra cosa que la herencia de nuestro país</div>
+                                            <div className="quote-author animated lightSpeedIn">Simon Bolivar</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </nav>
-                            
                         </div>
-                        <div className="hero-body is-centered">
-                            <div className="box pl-5 pr-5 z-index-1 animate__animated animate__fadeInLeft">
-                                <div className='mb-5 mr-5 ml-5 mt-4 has-text-weight-bold'>
-                                    <p className=' has-text-centered is-size-5 '>Inicio de Sesion</p>
-                                </div>
-                                <div className='mb-5 mr-5 ml-5 mt-5'>
-                                    <p className='is-size-7 has-text-centered '>Ingrese los datos solicitados para continuar con el proceso</p>
-                                </div>
+                    </div>
+                    <div className="column is-5-fullhd is-5-widescreen is-5-desktop pt-0 pb-0 pr-0 pl-0 is-12-mobile is-12-tablet">
+                        <div className="box is-radiusless vh-min100 is-flex is-justify-content-center is-align-items-center">
+                            <form className="field pl-7 pr-7"> 
+                                <figure className="image container is-width-65 image mb-5">
+                                    <Image className="image" src={'/logo/logo.png'} priority alt="marca" width={512} height={512}/>
+                                </figure>
                                 <div className='mb-5'>
-                                    <form className="field" >
-                                        <div className="control has-icons-right pb-4">
-                                            <input className="input" type="text" placeholder="Usuario" name="user"/>
-                                            <span className="icon is-small is-right">
-                                                <i className="fas fa-envelope"></i>
-                                            </span>
-                                        </div>
-
-                                        <div className="control has-icons-right pb-4 mb-4">
-                                            <input className="input" type="password" placeholder="Contraseña" name="pass"/>
-                                            <span className="icon is-small is-right">
-                                                <i className="fas fa-lock"></i>
-                                            </span>
-                                        </div>
-                                    </form>
-                                        <button className = "button is-fullwidth is-blue mb-4">Ingresar</button>
-                                        
+                                    <p className='is-size-7 has-text-centered'>Ingrese los datos solicitados para continuar con el proceso</p>
                                 </div>
-                                <div className='mb-4'>
+                            
+                                <div className="control has-icons-right mb-4">
+                                    <input className="input" type="text" placeholder="Usuario" value={credenciales.user} name="user" onChange={(e)=>(setCredenciales({...credenciales, [e.target.name]:e.target.value}))} />
+                                    <span className="icon is-small is-right">
+                                        <i className="fas fa-envelope"></i>
+                                    </span>
+                                </div>
+
+                                <div className="control has-icons-right mb-4">
+                                    <input className="input" type="password" placeholder="Contraseña" value={credenciales.pass} name="pass" onChange={(e)=>(setCredenciales({...credenciales, [e.target.name]:e.target.value}))} />
+                                    <span className="icon is-small is-right">
+                                        <i className="fas fa-lock"></i>
+                                    </span>
+                                </div>
+                                
+                                <div className="field is-grouped">
+                                    <p className="control is-expanded">
+                                        <button className="button is-primary is-fullwidth" onClick={handleSubmit}>
+                                            Ingresar
+                                        </button>
+                                    </p>
                                 </div>
                                 <div className='mb-4'>
                                     <p className='is-size-8 has-text-centered has-text-grey'>2024 | Empresa</p>
                                 </div>
-                            </div>
+                            </form>
                         </div>
-                    </section>
-            </Fragment>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        
+    </Fragment>
         
     )
 }

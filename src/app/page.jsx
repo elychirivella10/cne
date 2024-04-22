@@ -5,6 +5,7 @@ import Steps from '@/ui/steps/Steps'
 import Buscar from "@/ui/buscar/Buscar";
 import Funcionario from "@/ui/funcionario/Funcionario";
 import Encuesta from "@/ui/encuesta/Encuesta";
+import Aprobado from "@/ui/aprobado/Aprobado";
 
 //peticiones API
 import { creates } from "@/lib/peticiones/encuestaPreguntas";
@@ -27,7 +28,6 @@ import { filterComponents } from "@/lib/helpers/filterComponents";
     localidad: "",
     nombre_centro_votacion: "",
     id_estatus: 0,
-
   })
 
   //Obtenemos el numero en el que se encuentra el Step
@@ -40,7 +40,8 @@ import { filterComponents } from "@/lib/helpers/filterComponents";
     return (filterComponents(
       {
           1: <Funcionario {...rest}/>,
-          2: <Encuesta {...rest}/>
+          2: <Encuesta {...rest}/>,
+          3: <Aprobado {...rest}/>
       }, numeroStep))
   }
 
@@ -54,15 +55,19 @@ import { filterComponents } from "@/lib/helpers/filterComponents";
         <div className="column is-10">
           <Panel title='Nombre de Ente' subtitle={`Encuesta`}/>
         </div>
-        <div className="column is-10">
-          <div className="box">
-            <Steps 
-              number={2}  
-              titles={{title1:'Información Funcionario',title2:'Encuesta'}}
-              stepNumero={StepNumero}
-            />
+        {numeroStep !=3?
+          <div className="column is-10">
+            <div className="box">
+              <Steps 
+                number={2}  
+                numeroStep={numeroStep}
+                titles={{title1:'Información Funcionario',title2:'Encuesta'}}
+                stepNumero={StepNumero}
+              />
+            </div>
           </div>
-        </div>
+        :null
+        }
         {numeroStep<=1?
           <div className="column is-10">
             <Buscar set={setDatosFuncionarios}/>
@@ -71,7 +76,7 @@ import { filterComponents } from "@/lib/helpers/filterComponents";
         
         <div className="column is-10">
           <div className="box">
-            <Render values={datosFuncionario} preguntasEncuesta={preguntasEncuesta}/>
+            <Render values={datosFuncionario} preguntasEncuesta={preguntasEncuesta} setNumeroStep={setNumeroStep} setDatosFuncionarios={setDatosFuncionarios}/>
           </div>
         </div>
       </div>

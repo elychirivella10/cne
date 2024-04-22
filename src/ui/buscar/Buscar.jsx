@@ -3,7 +3,13 @@ import React, {useState} from "react"
 
 import { creates } from "@/lib/peticiones/funcionariosBusqueda"
 
+//Instancia de app de antd, para usar componentes si colocar manualmente la configuración
+import { App } from 'antd';
+
 const Buscar =({set})=>{
+
+    //obtenemos la variable de mensaje que traemos de la instancia App
+    const {message} = App.useApp();
 
     const [inde, setInde] = useState(0)
     return(
@@ -30,7 +36,7 @@ const Buscar =({set})=>{
                                 </p> 
                                 <div className="control">
                                     <button className="button is-info" onClick={(e)=>(
-                                        creates(inde, set)
+                                        creates(inde, set, message)
                                     )}>
                                         Buscar
                                     </button>
