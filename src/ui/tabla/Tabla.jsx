@@ -7,6 +7,7 @@ import { creates } from "@/lib/peticiones/funcionariosList";
 
 const TableComp = async ({columns,pagination}) =>{
     const data = await creates()
+    console.log(data)
     return(
         <div className="box">
             <Table
