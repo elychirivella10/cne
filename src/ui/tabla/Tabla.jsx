@@ -9,7 +9,7 @@ const TableComp = async ({columns,pagination}) =>{
     const data = await creates()
     console.log(data)
     return(
-        <div className="box">
+        <div className="box">s
             <Table
                 columns={columns}
                 dataSource={data}
