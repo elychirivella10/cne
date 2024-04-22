@@ -21,9 +21,8 @@ const Login=()=>{
     const handleSubmit = async (e) =>{
         e.preventDefault()
         const res = await login(credenciales, message)
-        console.log(res)
         if (res===true) {
-            router.push('/funcionarios/dashboard')
+            window.location.href = "/funcionarios/dashboard"
         }
     }
     return (

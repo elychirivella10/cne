@@ -8,7 +8,7 @@ export async function login (data, message) {
       .then(res=>{
         message.success('Bienvenido', 2)
         axios.post("/api/login", {"token":res.data.token})
-        resolve(true)
+        .then(res=>(resolve(true)))
       })
       .catch(error=>{
         message.error('Credenciales incorrectas', 2)
