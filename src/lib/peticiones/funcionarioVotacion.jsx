@@ -1,5 +1,5 @@
 import axios from "axios"
-import { rutaAxios } from "../helpers/variablesGoblales"
+import { rutaAxios } from "helpers/variablesGoblales"
 
 export async function update(values, message, step) {
     const id = values.id

@@ -1,5 +1,6 @@
 import axios from "axios"
-import { rutaAxios } from "@/lib/helpers/variablesGoblales";
+import Cookies from 'js-cookie';
+import { rutaAxios } from "helpers/variablesGoblales";
 
 
 export async function login (data, message) {
@@ -7,8 +8,8 @@ export async function login (data, message) {
       axios.post(`${rutaAxios}auth/user/authentication`, {...data})
       .then(res=>{
         message.success('Bienvenido', 2)
-        axios.post("/api/login", {"token":res.data.token})
-        .then(res=>(resolve(true)))
+        Cookies.set('token', res.data.token, { expires: 7, secure: true })
+        resolve(true)
       })
       .catch(error=>{
         message.error('Credenciales incorrectas', 2)

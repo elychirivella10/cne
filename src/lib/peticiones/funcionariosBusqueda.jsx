@@ -1,8 +1,8 @@
 import axios from "axios"
-import { rutaAxios } from "../helpers/variablesGoblales"
+import { rutaAxios } from "helpers/variablesGoblales"
 
 export async function creates(cedula, setDatos, alert) {
-    axios.get(`${rutaAxios}funcionarios/${cedula}`)
+    axios.get(`${rutaAxios}funcionarios/unico/${cedula}`)
     .then(res=>{
         alert.success('Funcionario '+res.data.apellidos_nombres+' encotrado', 2)
         return setDatos(res.data)

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { rutaAxios } from "../helpers/variablesGoblales"
+import { rutaAxios } from "helpers/variablesGoblales"
 
 export async function creates(respuestas, id, message) {
     let array = []
