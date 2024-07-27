@@ -1,4 +1,5 @@
 import { validarEmpty } from "helpers/validateEmpty"
+import { update } from "lib/peticiones/funcionarioVotacion"
 
 //Instancia de app de antd, para usar componentes si colocar manualmente la configuración
 import { App } from 'antd';
@@ -14,25 +15,45 @@ const Form = ({setNumeroStep, values, setValues}) =>{
                 <div className="column is-6"><button className="button is-warning is-dark is-fullwidth" onClick={(e)=>{
                     if (validarEmpty(values)) {
                         setValues({
-                            ...values,
-                            "id_estatus":2
+                        ...values,
+                        "id_estatus": 1
+                        });
+                    
+                        update(values, message, setNumeroStep, 2)
+                        .then((res) => {
+                            if (res !==false) {
+                                setNumeroStep(2);
+                            }
                         })
-                        setNumeroStep(2)
-                    }else{
-                        return message.error('Debe ingresar un funcionario para avanzar', 2)
+                        .catch((error) => {
+                            message.error('Error al actualizar: ' + error, 2);
+                        });
+                    } else {
+                        message.error('Debe ingresar un funcionario para avanzar', 2);
                     }
                     
                     }}>No vote</button></div>
                 <div className="column is-6"><button className="button is-primary is-fullwidth" onClick={(e)=>{
-                    if (validarEmpty(values)) {
-                        setValues({
-                            ...values,
-                            "id_estatus":1
-                        })
-                        setNumeroStep(2)
-                    }else{
-                        return message.error('Debe ingresar un funcionario para avanzar', 2)
-                    }
+                   if (validarEmpty(values)) {
+                    setValues({
+                      ...values,
+                      "id_estatus": 1
+                    });
+                  
+                    update(values, message, setNumeroStep, 1)
+                      .then((res) => {
+                        if (res !==false) {
+                            setNumeroStep(2);
+                        }
+                        // `update` ha terminado y concluido de manera correcta
+                      })
+                      .catch((error) => {
+                        // Hubo un error durante la ejecución de `update`
+                        message.error('Error al actualizar: ' + error, 2);
+                      });
+                  } else {
+                    message.error('Debe ingresar un funcionario para avanzar', 2);
+                  }
                     
                     }}>Si, Vote</button></div>
             </div>

@@ -2,8 +2,11 @@ import axios from "axios"
 import { rutaAxios } from "helpers/variablesGoblales"
 
 export async function creates(cedula, setData) {
-    const respuesta = await axios.get(`${rutaAxios}funcionarios/unico/${cedula}`)
-    setData(respuesta.data)
+    const respuesta = await axios.get(`${rutaAxios}funcionarios/unico/${cedula}/2`)
+    if (setData) {
+      return setData(respuesta.data)
+    }
+    return respuesta.data
 }
 export async function encuesta(id, setData) {
     const respuesta = await axios.get(`${rutaAxios}encuesta/byPresFunc/2/${id}/1/100`)
@@ -16,5 +19,10 @@ export async function encuesta(id, setData) {
         })
         
       }
-    setData(arr)
+
+      if (setData) {
+        return setData(arr)
+      }
+      return arr
+
 }

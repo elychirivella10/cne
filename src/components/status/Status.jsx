@@ -8,19 +8,21 @@ const Status=({setEnteData})=>{
     useEffect(() => {
         entes(setEntesData)
     }, [])
+
+    const handleChange = (e) => {
+        setEnteData(e.target.value)
+    }
     
     return(
 
         <div className="field has-addons is-justify-content-end">
             <p className="control">
                 <span className="select">
-                <select name="typeIdentification" onChange={(e)=>(
-                    setEnteData(e.target.value)
-                )}>
+                <select name="typeIdentification" onChange={handleChange}>
                     
                     <option value="TODOS">TODOS</option>
-                    {entesData.map(es=>(
-                        <option value={es.ente}>{es.ente}</option>
+                    {entesData.map((es, index)=>(
+                        <option key={index} value={es.ente}>{es.ente}</option>
                     ))}
                 </select>
                 </span>

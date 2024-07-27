@@ -22,7 +22,7 @@ const Static = ({values}) => {
                     </span>
                 </div>
             </div>
-            <div className="column is-6">
+{/*             <div className="column is-6">
                 <label className="label">Correo electrónico <span className="has-text-danger-dark">*</span></label>
                 <div className="control has-icons-right pb-4" >
                     <input className="input" type="email"  placeholder="Correo electrónico" required name="agent_email" value={values.correo} readOnly/>
@@ -30,7 +30,7 @@ const Static = ({values}) => {
                         <i className="fas fa-envelope"></i>
                     </span>
                 </div>
-            </div>
+            </div> */}
             <div className="column is-6">
                 <label className="label">Teléfono <span className="has-text-danger-dark">*</span></label>
                 <div className="field " >
@@ -42,7 +42,7 @@ const Static = ({values}) => {
                     </div>
                 </div>
             </div>
-            <div className="column is-6">
+{/*             <div className="column is-6">
                 <label className="label">Serial Patria <span className="has-text-danger-dark">*</span></label>
                 <div className="control has-icons-right pb-4" >
                     <input className="input" type="email"  placeholder="Serial Patria" required name="agent_email" value={values.serial_carnet} readOnly/>
@@ -59,8 +59,8 @@ const Static = ({values}) => {
                         <i className="fas fa-envelope"></i>
                     </span>
                 </div>
-            </div>
-            <div className="column is-4">
+            </div> */}
+            <div className="column is-6">
                 <label className="label">Estado <span className="has-text-danger-dark">*</span></label>
                 <div className="control has-icons-right pb-4" >
                     <input className="input" type="email"  placeholder="Estado" required name="agent_email" value={values.estado} readOnly/>
@@ -69,7 +69,7 @@ const Static = ({values}) => {
                     </span>
                 </div>
             </div>
-            <div className="column is-4">
+            <div className="column is-6">
                 <label className="label">Municipio <span className="has-text-danger-dark">*</span></label>
                 <div className="control has-icons-right pb-4" >
                     <input className="input" type="email"  placeholder="Municipio" required name="agent_email" value={values.municipio} readOnly/>
@@ -78,8 +78,8 @@ const Static = ({values}) => {
                     </span>
                 </div>
             </div>
-            <div className="column is-4">
-                <label className="label">Localidad <span className="has-text-danger-dark">*</span></label>
+            <div className="column is-6">
+                <label className="label">Parroquia <span className="has-text-danger-dark">*</span></label>
                 <div className="control has-icons-right pb-4" >
                     <input className="input" type="email"  placeholder="Parroquia" required name="agent_email" value={values.localidad} readOnly/>
                     <span className="icon is-small is-right">

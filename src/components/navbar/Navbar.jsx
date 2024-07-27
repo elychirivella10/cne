@@ -90,11 +90,7 @@ const NavBar = () =>{
                     Perfil
                 </a> */}
                 <hr className="navbar-divider"/>
-                    <a className="navbar-item" onClick={(e)=>(
-                        deleteToken().then(res=>(
-                            window.location.href = "/login"
-                        ))
-                    )}>
+                    <a className="navbar-item" onClick={async(e)=>(deleteToken())}>
                         Salir
                     </a>
                 </div>

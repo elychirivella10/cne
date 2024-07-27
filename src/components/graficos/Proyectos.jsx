@@ -21,14 +21,14 @@ const CustomTooltip = ({active, payload, fill, fill_2, fill_3}) => {
         
       return (
       <div className="box degradado-morado-transparent" id="box">
-        <p className ="text-white">{payload[0].payload.categoria}</p>
-        <p className="label text-white is-size-7"><span id="label2"></span>{`Sin Información: ${payload[1].value}`}</p>
+        <p className ="text-white">{payload[0].payload.estado}</p>
+        <p className="label text-white is-size-7"><span id="label2"></span>{`Total: ${(payload[0].value+payload[1].value+payload[2].value)}`}</p>
+        <p className="label text-white is-size-7"><span id="label2"></span>{`Sin Reportar: ${payload[1].value}`}</p>
         <p className="label text-white is-size-7"><span id="label1"></span>{`Votantes: ${payload[0].value}`}</p>
         <p className="label text-white is-size-7"><span id="label3"></span>{`No Votantes: ${payload[2].value}`}</p>
       </div>
     )
     }else{
-      console.log(payload)
       return (
       <div className="box degradado-morado-transparent">
         <p className ="text-white">{payload[0].payload.estado}</p>

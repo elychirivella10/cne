@@ -5,9 +5,14 @@ import Basic from "components/graficos/Basic";
 import BarGraf from "components/graficos/Proyectos";
 import Donut from "components/graficos/Donut";
 
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
+import Export from 'components/excel/Export'
+
 import { estatus, estados } from "lib/peticiones/graficos";
 
  const Dashboard = ()=> {
+  const [spinning, setSpinning] = useState(false);
   const [estadoss, setEstados] = useState([
 
   ])
@@ -24,22 +29,33 @@ import { estatus, estados } from "lib/peticiones/graficos";
   }, [enteData])
 
   const sync = async (val)=>{
-    const estadosGraficos = await estados(val)
-    const estatusGraficos = await estatus(val)
-    setEstados(estadosGraficos)
-    setEstatus(estatusGraficos)
+    const estadosGraficos = estados(val)
+    const estatusGraficos = estatus(val)
+    setSpinning(true)
+    Promise.all([estadosGraficos, estatusGraficos]).then((values) => {
+      setEstados(values[0])
+      setEstatus(values[1])
+      setSpinning(false)
+    });
   }
   
   return (
     <div className="columns is-multiline is-centered is-vcentered">
       <div className="column is-12">
+        <Spin spinning={spinning} indicator={<LoadingOutlined spin />}  size="large" fullscreen />
         <div className="columns is-multiline">
           {
             estadoss.length>0?
             
             <Fragment>
               <div className="column is-12">
-                <Panel title='Nombre de Ente' subtitle={`Dashboard`} setEnteData={setEnteData} options={true}/>
+                <Panel title='Centro de Datos' subtitle={`Dashboard`} setEnteData={setEnteData} options={true}/>
+              </div>
+
+              <div className="column is-12">
+                <div className="box">
+                  <Export data={estadoss} dataFiltrada ={[]} nombre={"estados"}/>
+                </div>
               </div>
               
               <div className="column is-3">
@@ -47,7 +63,7 @@ import { estatus, estados } from "lib/peticiones/graficos";
                     title = "Funcionarios registrados"
                     icon = "blue"
                     reportes ={estatuss[0].total+estatuss[1].total+estatuss[2].total}
-                    nomenclatura="Tareas"
+                    nomenclatura="Grafico"
                     classname={'height-grafico is-justify-content-center is-align-items-center is-flex'}
                     height={"height"}
                 />
@@ -57,8 +73,8 @@ import { estatus, estados } from "lib/peticiones/graficos";
                     title = "Votaron"
                     icon = "green"
                     reportes ={estatuss[0].total}
-                    nomenclatura="Tareas"
-                />
+                    nomenclatura="Grafico"
+                    />
               </div>
               <div className="column is-3">
                 <Basic
@@ -66,17 +82,17 @@ import { estatus, estados } from "lib/peticiones/graficos";
                     icon = "red"
                     reportes ={estatuss[1].total}
                     llave="porcentaje_abastecimiento"
-                    nomenclatura="Tareas"
-                />
+                    nomenclatura="Grafico"
+                    />
               </div>
               <div className="column is-3">
                 <Basic
-                    title = "Sin Información"
+                    title = "Sin Reportar"
                     icon = "yellow"
                     reportes ={estatuss[2].total}
                     llave="porcentaje_abastecimiento"
-                    nomenclatura="Tareas"
-                />
+                    nomenclatura="Grafico"
+                    />
               </div>
 
               <div className="column is-8">

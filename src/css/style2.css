@@ -2276,7 +2276,7 @@ a.box:active {
 }
 @media screen and (min-width: 1024px) {
   .container {
-    max-width: 960px;
+    max-width: 1211px;
   }
   .container.app {
     max-width: 96%;
@@ -32160,4 +32160,8 @@ a.has-text-orange:hover, a.has-text-orange:focus {
 }
 .quote-content .quote-author:before{
 	content:'- ';
+}
+
+.has-background-success-market{
+  background: hsl(135.69deg 100% 36%) !important;
 }

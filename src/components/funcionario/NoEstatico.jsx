@@ -17,12 +17,13 @@ const NoStatic = ({setData, data}) => {
         cedula: "",
         apellidos_nombres: "",
         telefono: "",
-        correo: "",
-        serial_carnet: "",
-        codigo_carnet: "",
+        correo: "x@gmail.com",
+        serial_carnet: 0,
+        codigo_carnet: 0,
         estado: "",
         municipio: "",
         localidad: "",
+        responsable: "",
         departamento:"",
         entidad_principal:"",
         entidad_adscripcion:"",
@@ -99,7 +100,7 @@ const NoStatic = ({setData, data}) => {
                             <input className="input" type="text" placeholder="Nombres" value={values.apellidos_nombres} required name='apellidos_nombres' onChange={textChange}/>
                         </div>
                     </div>
-                    <div className="column is-6">
+{/*                     <div className="column is-6">
                         <label className="label">Correo electrónico <span className="has-text-danger-dark"></span></label>
                         <div className="control has-icons-right pb-4" >
                             <input className="input" type="email"  placeholder="Correo electrónico"name="correo" value={values.correo} onChange={(e)=>(
@@ -109,8 +110,8 @@ const NoStatic = ({setData, data}) => {
                                 })
                             )}/>
                         </div>
-                    </div>
-                    <div className="column is-6">
+                    </div> */}
+                    <div className="column is-12">
                         <label className="label">Teléfono <span className="has-text-danger-dark"></span></label>
                         <div className="field " >
                             <div className="control is-expanded has-icons-right pb-4 mb-2" >
@@ -118,23 +119,23 @@ const NoStatic = ({setData, data}) => {
                             </div>
                         </div>
                     </div>
-                    <div className="column is-6">
+{/*                     <div className="column is-6">
                         <label className="label">Serial Patria <span className="has-text-danger-dark"></span></label>
                         <div className="control has-icons-right pb-4" >
                             <input className="input" type="number"  placeholder="Serial Patria" name="serial_carnet" value={values.serial_carnet} onChange={numberSerialChange}/>
                         </div>
                     </div>
                     <div className="column is-6">
-                        <label className="label">Codigo patria <span className="has-text-danger-dark"></span></label>
+                        <label className="label">Código patria <span className="has-text-danger-dark"></span></label>
                         <div className="control has-icons-right pb-4" >
-                            <input className="input" type="number"  placeholder="Codigo patria" name="codigo_carnet" value={values.codigo_carnet} onChange={numberSerialChange}/>
+                            <input className="input" type="number"  placeholder="Código patria" name="codigo_carnet" value={values.codigo_carnet} onChange={numberSerialChange}/>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="column is-4">
                         <div className="field pb-4 mb-2" >
                             <label className="label">Ente principal<span className="has-text-danger-dark">*</span></label>
                             <p className="control" >
-                                <input type="text" className="input" value={entesData.length>0?entesData[0].ente_principal:""}/>
+                                <input type="text" className="input" value={entesData.length>0?entesData[0].ente_principal:""} readOnly/>
                             </p>
                         </div>
                     </div>
@@ -151,8 +152,8 @@ const NoStatic = ({setData, data}) => {
                                     })
                                 )}>
                                     <option value="0">---Seleccione un ente---</option>
-                                    {entesData.map(es=>(
-                                        <option value={es.ente}>{es.ente}</option>
+                                    {entesData.map((es, index)=>(
+                                        <option key={index} value={es.ente}>{es.ente}</option>
                                     ))}
                                 </select>
                                 </span>
@@ -182,8 +183,8 @@ const NoStatic = ({setData, data}) => {
                                     })
                                 )}>
                                     <option value="0">---Seleccione un estado---</option>
-                                    {estados.map(es=>(
-                                        <option value={es.estado}>{es.estado}</option>
+                                    {estados.map((es, index)=>(
+                                        <option key={index} value={es.estado}>{es.estado}</option>
                                     ))}
                                 </select>
                                 </span>
@@ -197,15 +198,21 @@ const NoStatic = ({setData, data}) => {
                         </div>
                     </div>
                     <div className="column is-4">
-                        <label className="label">Localidad <span className="has-text-danger-dark">*</span></label>
+                        <label className="label">Parroquia <span className="has-text-danger-dark">*</span></label>
                         <div className="control has-icons-right pb-4" >
                             <input className="input" type="text"  placeholder="Parroquia" required name="localidad" value={values.localidad} onChange={textChange}/>
                         </div>
                     </div>
-                    <div className="column is-12">
+                    <div className="column is-6">
                         <label className="label">Centro de votación <span className="has-text-danger-dark">*</span></label>
                         <div className="control has-icons-right pb-4" >
                             <input className="input" type="text"  placeholder="Centro de votación" required name="nombre_centro_votacion" value={values.nombre_centro_votacion} onChange={textChange}/>
+                        </div>
+                    </div>
+                    <div className="column is-6">
+                        <label className="label">Identificación Jefe 1x10 <span className="has-text-danger-dark"></span></label>
+                        <div className="control has-icons-right pb-4" >
+                            <input className="input" type="text"  placeholder="Identificación Jefe 1x10" name="responsable" value={values.responsable} onChange={numberChange}/>
                         </div>
                     </div>
                     <div className="column is-12">

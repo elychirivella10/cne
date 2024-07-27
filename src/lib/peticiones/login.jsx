@@ -1,6 +1,7 @@
 import axios from "axios"
 import Cookies from 'js-cookie';
 import { rutaAxios } from "helpers/variablesGoblales";
+import {setToken, deleteToken} from 'helpers/auth/auth'
 
 
 export async function login (data, message) {
@@ -8,7 +9,7 @@ export async function login (data, message) {
       axios.post(`${rutaAxios}auth/user/authentication`, {...data})
       .then(res=>{
         message.success('Bienvenido', 2)
-        Cookies.set('token', res.data.token, { expires: 7, secure: true })
+        setToken(res.data.token)
         resolve(true)
       })
       .catch(error=>{

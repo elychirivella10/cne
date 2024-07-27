@@ -1,9 +1,15 @@
 import {useState} from 'react'
+
+//componentes
 import Panel from "components/panel/Panel";
 import NoStatic from "components/funcionario/NoEstatico";
-import { crear } from 'lib/peticiones/funcionariosCrear';
+
+//librerias
 import { redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
+//peticiones
+import { crear } from 'lib/peticiones/funcionariosCrear';
 
 
 //Instancia de app de antd, para usar componentes si colocar manualmente la configuración
@@ -15,32 +21,35 @@ const Form =()=> {
     const {message} = App.useApp();
     
   const [values, setValues] = useState({
+    id:0,
     cedula: "",
-    apellidos_nombres: "",
+    nombre: "",
     telefono: "",
-    correo: "x@gmail.com",
-    serial_carnet: 0,
-    codigo_carnet: 0,
-    estado: "",
-    municipio: "",
-    localidad: "",
-    responsable: "",
-    departamento:"",
-    entidad_principal:"",
-    entidad_adscripcion:"",
-    nombre_centro_votacion: "",
+    email: "x@gmail.com",
+    apellido: "",
+    usuario: "",
+    password: "",
+    rol: "",
+    activo:1
+  })
+  const [unidades, setUnidades] = useState({
+    piso:"",
+    numero:"",
+    tipo_unidad: "",
+    usuario_id: "",
+    alicuota: "x@gmail.com",
   })
 
-  const crearFuncionario = async (values) =>{
+  const crearFuncionario = async (values, unidades) =>{
     setValues(values)
-    const val = await crear(values, message, navigate)
+    crear(values, message, navigate, unidades)
   }
 
   return (
     <div className="container mt-4">
       <div className="columns is-multiline is-centered">
         <div className="column is-10">
-          <Panel title='Centro de Datos' subtitle={`Creación de Funcionario`}/>
+          <Panel title='Registrar Usuarios' subtitle={`Condominio Siena`}/>
         </div>        
         <div className="column is-10">
           <div className="box">

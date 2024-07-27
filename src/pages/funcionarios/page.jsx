@@ -1,26 +1,35 @@
 import { useState, useEffect, useRef } from 'react'
 import Panel from "components/panel/Panel";
-
+import Export from 'components/excel/Export'
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Space} from 'antd';
+import { Button, Input, Space, Badge, Select, Spin} from 'antd';
 import Highlighter from 'react-highlight-words';
-
 import TableComp from "components/tabla/Tabla";
-
-import Basic from 'components/graficos/Basic';
 import { Link } from 'react-router-dom';
-
 import { creates } from "lib/peticiones/funcionariosList";
-
 import { estados } from "lib/data/estados";
 import { entes } from 'lib/peticiones/entes';
+import { LoadingOutlined } from '@ant-design/icons';
+import { setFuncionariosLote } from 'lib/peticiones/funcionarioVotacion';
+
+import { App } from 'antd';
 
  const Funcionarios = ()=> {
+  //obtenemos la variable de mensaje que traemos de la instancia App
+  const {message} = App.useApp();
+  const [spinning, setSpinning] = useState(false);
   const [data, setData] = useState([])
+  const [dataFiltrada, setDataFiltrada] = useState([])
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
   const [entesData, setEntesData] = useState([])
+  const [idTrabajador, setIdTrabajador] = useState(0)
+  const [funcionariosSeleccionados, setFuncionariosSeleccionados] = useState([])
+  const estatusColor =["success", "error","warning"]
+  const [loading, setLoading] = useState(false);
+
+  
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -134,23 +143,32 @@ import { entes } from 'lib/peticiones/entes';
   }, [])
 
   const sync = async () =>{
-      const valores = await creates()
-      setData(valores)
+      const valores = creates()
+      setFuncionariosLote([])
+      setSpinning(true)
+      Promise.all([valores]).then((values) => {
+        setData(values[0])
+        setSpinning(false)
+      });
 
   }
 
   const Columns = [
     {
+      width:28,
+      render: (text, record) => <Badge status={estatusColor[(record.id_estatus-1)]}/>,
+    },
+    {
       title:'Entidad',
       dataIndex:'entidad_adscripcion',
+      ellipsis: true,
       filters: 
         entesData.map(es=>(
           {
             text: es.ente,
-            value: es.ente,
+            value: es.ente.toUpperCase(),
           }
         )),
-      defaultFilteredValue : [entesData.length>0?entesData[0].ente_principal:""],
       onFilter: (value, record) => record.entidad_adscripcion.indexOf(value) === 0,
       render: (text, record) => <Link to={''+record.id+'/'+record.cedula}>{text}</Link>,
      /* filters: 
@@ -166,18 +184,22 @@ import { entes } from 'lib/peticiones/entes';
     {
       title:'Cedula',
       dataIndex:'cedula',
+      width:100,
       ...getColumnSearchProps('cedula'),
       render: (text, record) => <Link to={''+record.id+'/'+record.cedula}>{text}</Link>,
     },
     {
       title:'Nombre y Apellido',
       dataIndex:'apellidos_nombres',
+      ellipsis: true,
       ...getColumnSearchProps('apellidos_nombres'),
       render: (text, record) => <Link to={''+record.id+'/'+record.cedula}>{text}</Link>,
     },
     {
       title:'Estado',
       dataIndex:'estado',
+      width:150,
+      responsive: ["lg"],
       filters: 
         estados.map(es=>(
           {
@@ -189,13 +211,53 @@ import { entes } from 'lib/peticiones/entes';
       onFilter: (value, record) => record.estado.indexOf(value) === 0,
     },
     {
-      title:'Teléfono',
-      dataIndex:'telefono',
-      ...getColumnSearchProps('telefono'),
+      title:'Jefe 1x10',
+      dataIndex:'porcentaje',
+      width:100,
+      responsive: ["lg"],
+      render: (text, record) =>  <Link to={''+record.id+'/'+record.cedula}>{record.porcentaje}</Link>,
+      filters: [
+        {
+          text: 'SI',
+          value: 'SI',
+        },
+        {
+          text: 'NO',
+          value: 'NO',
+        }
+      ],
+      //defaultFilteredValue : ['SI'],
+      onFilter: (value, record) => record.porcentaje.indexOf(value) == 0
+    },
+    {
+      title:'1X10',
+      dataIndex:'cantidad_responsable',
+      width:70,
+      responsive: ["md"],
+      render: (text, record) => <Link to={''+record.id+'/'+record.cedula}>{record.cantidad_responsable}</Link>,
+
+/*       filters: [
+        {
+          text: 'Si',
+          value: 'SI',
+        },
+        {
+          text: 'No',
+          value: 'NO',
+        },
+        {
+          text: 'Por definir',
+          value: 'POR DEFINIR',
+        },
+      ],
+      //defaultFilteredValue : ['SI'],
+      onFilter: (value, record) => record.estatus.indexOf(value) === 0, */
     },
     {
       title:'Estatus',
       dataIndex:'estatus',
+      width:100,
+      responsive: ["md"],
       filters: [
         {
           text: 'Si',
@@ -215,18 +277,63 @@ import { entes } from 'lib/peticiones/entes';
     }
   ];
 
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+        setFuncionariosSeleccionados(selectedRows);
+    }
+  };
+
+  const handleChange = (value) => {
+      setIdTrabajador(value)
+  };
+
+  const start = () => {
+    setSpinning(true)
+    setLoading(true);
+    setFuncionariosLote(funcionariosSeleccionados, idTrabajador, message, sync).then(res=>{
+      setLoading(false);
+    }).catch(error=>(
+      message.error('Ha ocurrido un error, intente mas tarde')
+    ))
+   
+  };
+
+  const hasSelected = funcionariosSeleccionados.length > 0;
+
   return (
     <div className="columns is-multiline is-centered is-vcentered">
       <div className="column is-12">
-        <Panel title='Nombre de Ente' subtitle={`Lista Funcionario`}/>
+        <Spin spinning={spinning} indicator={<LoadingOutlined spin />}  size="large" fullscreen />
+        <Panel title='Centro de Datos' subtitle={`Lista Funcionario`}/>
 
         <div className="columns is-multiline">
           <div className="column is-12">
-            {
-              entesData.length>0?
-                <TableComp columns={Columns} data={data} pagination={{ defaultPageSize: 5, pageSizeOptions: ['5', '7','10', '20', '30'] }}/>
-              :null
-            }
+            
+            <div className="box">
+              <Button type="primary" className='button is-blue' disabled={!hasSelected} loading={loading} onClick={start}>
+                Guardar
+              </Button>
+                <span
+                style={{
+                    marginLeft: 8,
+                }}
+              >
+                <Select
+                    defaultValue="Seleccione un Funcionario"
+                    style={{
+                        width: 250,
+                    }}
+                    onChange={handleChange}
+                    disabled={!hasSelected}
+                    fieldNames={{label:'nombre', value:'id'}}
+                    options={[{nombre:'Si, Vote', id:1},{nombre:'No Vote', id:2}]}
+                />
+                <span className='ml-3 mr-3'>{hasSelected ? `${funcionariosSeleccionados.length} Funcionarios seleccionados` : ''}</span>
+                <Export data={data} dataFiltrada ={dataFiltrada} nombre={"funcionarios"}/>
+              </span>
+              <TableComp  setDataFiltrada={setDataFiltrada} columns={Columns} rowSelection={rowSelection} data={data} pagination={{ defaultPageSize: 10, pageSizeOptions: ['5', '7', '10', '20', '30'] }}/>
+              
+            </div>
           </div>
         </div>
       </div>

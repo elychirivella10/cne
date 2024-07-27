@@ -53,7 +53,7 @@ import { filterComponents } from "helpers/filterComponents";
     <div className="container mt-4">
       <div className="columns is-multiline is-centered">
         <div className="column is-10">
-          <Panel title='Nombre de Ente' subtitle={`Encuesta`}/>
+          <Panel title='Centro de Datos' subtitle={`Encuesta`}/>
         </div>
         {numeroStep !=3?
           <div className="column is-10">

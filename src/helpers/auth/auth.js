@@ -1,7 +1,7 @@
 import Axios from "axios";
 import Cookies from 'js-cookie';
 import { redirect } from "react-router-dom";
-const TOKEN_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvY2Vuc29hcGkuc2FwaS5nb2IudmUiLCJpYXQiOjE3MDk1MTEyMTEsImF1ZCI6ImRhMzlhM2VlNWU2YjRiMGQzMjU1YmZlZjk1NjAxODkwYWZkODA3MDkifQ.b9rOxxkoB8gfuCm-jg5_01iY0U-QGl9kJ6MdtpWBGF4'
+const TOKEN_KEY ='access';
 const TOKEN_NAME = 'name_user';
 const TOKEN_ROLE = 'sr';
 const TOKEN_USER = 'su';
@@ -10,7 +10,7 @@ export function setToken(token) {
   localStorage.setItem(TOKEN_KEY, token);
 }
 export function getToken() {
-  return Cookies.get('token');
+  return localStorage.getItem(TOKEN_KEY);
 }
 export function getName() {
   return localStorage.getItem(TOKEN_NAME);
@@ -31,9 +31,11 @@ export function deleteRole(e) {
 export function deleteUser(e) {
   localStorage.removeItem(TOKEN_USER);
 }
-export function deleteToken() {
-  Cookies.remove('token')
-  return window.location.href = "/login"
+export function deleteToken(e) {
+  localStorage.removeItem(TOKEN_KEY);
+  if (getToken() === null) {
+    window.location.href = "/login"
+  }
   
 }
 
@@ -56,7 +58,6 @@ export function initAxiosInterceptors() {
     return config
   });
 
-  console.log(Axios)
   Axios.interceptors.response.use(
     response => response,
   );

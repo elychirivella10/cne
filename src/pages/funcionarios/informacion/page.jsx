@@ -4,9 +4,16 @@ import Panel from "components/panel/Panel"
 import { useParams } from "react-router-dom";
 import { creates, encuesta } from "lib/peticiones/funcionariosInformacion";
 import { Descriptions } from 'antd';
-import { Avatar, List } from 'antd';
+import { Avatar, List, Badge, Spin} from 'antd';
+import { responsables } from "lib/peticiones/funcionariosResponsableLista";
+import TableComp from "components/tabla/Tabla";
+import { LoadingOutlined } from '@ant-design/icons';
+import { Link } from "react-router-dom";
 
 const InformacionFuncionario = () =>{
+    const estatus =["Si", "No","Sin Definir"]
+    const estatusColor =["success", "error","warning"]
+    const [spinning, setSpinning] = useState(false);
     let {cedula} = useParams('cedula')
     let {id} = useParams('cedula')
     const [data, setData] = useState({
@@ -27,30 +34,25 @@ const InformacionFuncionario = () =>{
         departamento: "",
         created: "",
     })
+    const [responsablesLista, setResponsablesLista] = useState([])
 
     const [dataEncuesta, setDataEncuesta] = useState([])
 
     const items = [
         {
+          key: '12',
+          label: 'Estatus',
+          children: <Badge status={estatusColor[(data.id_estatus-1)]} text={estatus[(data.id_estatus-1)]} />
+        },
+        {
+          key: '1',
+          label: 'Nro Identificacion Jefe 1x10',
+          children: <Link to={data.responsable!=0?`/funcionarios/${data.id_responsable}/${data.responsable}`:''}>{data.responsable}</Link>,
+        },
+        {
           key: '1',
           label: 'Telefono',
           children: data.telefono,
-        },
-        {
-          key: '2',
-          label: 'Correo',
-          span:2,
-          children: data.correo,
-        },
-        {
-          key: '3',
-          label: 'Serial Carnet de la Patria',
-          children: data.serial_carnet,
-        },
-        {
-          key: '4',
-          label: 'Codigo Carnet de la Patria',
-          children: data.codigo_carnet,
         },
         {
           key: '5',
@@ -64,7 +66,7 @@ const InformacionFuncionario = () =>{
         },
         {
           key: '8',
-          label: 'Localidad',
+          label: 'Parroquia',
           children: data.localidad,
         },
         {
@@ -89,41 +91,105 @@ const InformacionFuncionario = () =>{
         }
       ];
 
-
-     
+      const Columns = [
+        {
+          width:28,
+          render: (text, record) => <Badge status={estatusColor[(record.id_estatus-1)]}/>,
+        },
+        {
+          title:'Entidad',
+          dataIndex:'entidad_adscripcion'
+        },
+        {
+          title:'Cedula',
+          dataIndex:'cedula',
+          width:100,
+          render: (text, record) => <Link to={'/funcionarios/'+record.id+'/'+record.cedula}>{text}</Link>,
+        },
+        {
+          title:'Nombre y Apellido',
+          dataIndex:'apellidos_nombres',
+          ellipsis: true,
+          render: (text, record) => <Link to={'/funcionarios/'+record.id+'/'+record.cedula}>{text}</Link>,
+        },
+        {
+          title:'Estatus',
+          dataIndex:'estatus',
+          responsive: ["md"],
+          filters: [
+            {
+              text: 'Si',
+              value: 'SI',
+            },
+            {
+              text: 'No',
+              value: 'NO',
+            },
+            {
+              text: 'Por definir',
+              value: 'POR DEFINIR',
+            },
+          ],
+          //defaultFilteredValue : ['SI'],
+          onFilter: (value, record) => record.estatus.indexOf(value) === 0,
+        }
+      ];
 
     useEffect(() => {
-        creates(cedula,setData)
-        encuesta(id, setDataEncuesta)
-    }, [])
+        setSpinning(true)
+        const valores = creates(cedula, null)
+        const encuestas = encuesta(id, null)
+        const responsablesD = responsables(cedula, null)
+        Promise.all([valores, encuestas, responsablesD]).then((values) => {
+          setData(values[0])
+          setDataEncuesta(values[1])
+          setResponsablesLista(values[2])
+          setSpinning(false)
+        });
+    }, [cedula])
     
     return(
         <div className="columns is-multiline is-centered is-vcentered">
             <div className="column is-12">
-                <Panel title='Nombre de Ente' subtitle={`Informacion Funcionario`}/>
+                <Spin spinning={spinning} indicator={<LoadingOutlined spin />}  size="large" fullscreen />
+                <Panel title='Centro de Datos' subtitle={`Informacion Funcionario`}/>
             </div>
+            {
+              dataEncuesta.length>0?
+                <div className="column is-12">
+                  <div className="box">
+                    <p className = "text-anchor has-text-weight-bold">Respuesta Encuesta</p>
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={dataEncuesta}
+                        renderItem={(item, index) => (
+                          <List.Item>
+                            <List.Item.Meta
+                              avatar={<Avatar src={`https://api.dicebear.com/8.x/icons/svg?seed=39`} />}
+                              title={item.title}
+                              description={item.description}
+                            />
+                          </List.Item>
+                        )}
+                      />
+                  </div>
+                </div>
+              :null
+            }
+            
             <div className="column is-12">
               <div className="columns is-multiline">
-                <div className="column is-8">
+                <div className="column is-12">
                   <div className="box">
                     <Descriptions title={`${data.apellidos_nombres}  CI:${cedula}`} layout="vertical" items={items} />
                   </div>
                 </div>
-                <div className="column is-4">
+
+                
+                <div className="column is-12">
                   <div className="box">
-                  <List
-                      itemLayout="horizontal"
-                      dataSource={dataEncuesta}
-                      renderItem={(item, index) => (
-                        <List.Item>
-                          <List.Item.Meta
-                            avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`} />}
-                            title={item.title}
-                            description={item.description}
-                          />
-                        </List.Item>
-                      )}
-                    />
+                    <p className = "text-anchor has-text-weight-bold">1X10</p>
+                    <TableComp columns={Columns} data={responsablesLista} pagination={{ defaultPageSize: 10, pageSizeOptions: ['5', '7', '10', '20', '30'] }}/>
                   </div>
                 </div>
               </div>

@@ -28,7 +28,7 @@ const Donut = ({data, height, total}) => {
       showForSingleSeries: false
     },
     series: [55, 32, 54],
-    labels: ['No Voto', 'Si Voto', 'Sin Información'],
+    labels: ['No Voto', 'Si Voto', 'Sin Reportar'],
     chart: {
       type: 'radialBar'
     },

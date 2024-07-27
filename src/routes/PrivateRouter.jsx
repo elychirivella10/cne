@@ -4,7 +4,7 @@ import { getToken } from "helpers/auth/auth";
 
 const PrivateRoute = ({ user, children }) => {
     if (!getToken()) {
-      //return <Navigate to="/login" replace />;
+      return <Navigate to="/login" replace />;
     }
   
     return <div className="container">{children}</div> ;
